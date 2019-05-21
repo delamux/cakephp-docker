@@ -1,0 +1,83 @@
+{
+  "Services": {
+    "composer": {
+      "Args": [
+        "install"
+      ],
+      "Image": "composer@sha256:d6e044acf275a182622ae49102ecec50d05226896216dd9a236501810eead802",
+      "Networks": [
+        "default"
+      ]
+    },
+    "myadmin": {
+      "Env": [
+        "PMA_ARBITRARY=1",
+        "PMA_HOST=mysql"
+      ],
+      "Image": "phpmyadmin/phpmyadmin@sha256:8efb1f7047d8d6c9d5061f43bb27c9b63e8cd6bd7ed6cb4ccd2a17497ae21c1f",
+      "Networks": [
+        "default"
+      ],
+      "Ports": [
+        {
+          "Port": 80,
+          "Protocol": "tcp"
+        }
+      ]
+    },
+    "mysqldb": {
+      "Env": [
+        "NGINX_HOST=localhost",
+        "PHP_VERSION=7.2.15",
+        "MYSQL_VERSION=5.7.26",
+        "MYSQL_HOST=mysql",
+        "MYSQL_DATABASE=myapp",
+        "MYSQL_ROOT_USER=root",
+        "MYSQL_ROOT_PASSWORD=root",
+        "MYSQL_USER=dev",
+        "MYSQL_PASSWORD=dev"
+      ],
+      "Image": "mysql@sha256:196fe3e00d68b2417a8cf13482bdab1fcc2b32cf7c7575d0906c700688b352b4",
+      "Networks": [
+        "default"
+      ],
+      "Ports": [
+        {
+          "Port": 3306,
+          "Protocol": "tcp"
+        }
+      ]
+    },
+    "php": {
+      "Image": "nanoninja/php-fpm@sha256:76856d0e5eb0ae95a2e2f5101047a125c92ad86e623072fc0b498fdba5bc184c",
+      "Networks": [
+        "default"
+      ]
+    },
+    "web": {
+      "Args": [
+        "/bin/sh",
+        "-c",
+        "envsubst '$NGINX_HOST' < /etc/nginx/conf.d/default.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"
+      ],
+      "Env": [
+        "NGINX_HOST=localhost"
+      ],
+      "Image": "nginx@sha256:57a226fb6ab6823027c0704a9346a890ffb0cacde06bc19bbc234c8720673555",
+      "Networks": [
+        "default"
+      ],
+      "Ports": [
+        {
+          "Port": 80,
+          "Protocol": "tcp"
+        },
+        {
+          "Port": 443,
+          "Protocol": "tcp"
+        }
+      ]
+    }
+  },
+  "Version": "0.1"
+}
