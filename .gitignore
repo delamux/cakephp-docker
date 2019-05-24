@@ -3,7 +3,11 @@
 .DS_Store
 
 # Application
-app/
+app/composer.json
+app/composer.lock
+app/vendor/
+app/doc/
+app/report/
 data/
 
 # PHPStorm
