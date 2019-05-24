@@ -20,7 +20,11 @@ RUN apt-get update -q -y \
   # unzip needed due to https://github.com/composer/composer/issues/4471
   unzip \
   git \
+  zip \
   && rm -rf /var/lib/apt/lists/*
+
+# Install composer
+RUN curl --silent --show-error https://getcomposer.org/installer | php
 
 # Install and configure php plugins
 RUN set -xe \
